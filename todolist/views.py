@@ -52,8 +52,6 @@ def change_todo(request:Request,pk:int):
 def delete_todo(request:Request,pk:int):
     if request.method == 'DELETE':
         instance = get_object_or_404(ToDo,pk=pk)
-        
-        print('adsfkj;lj;kjl;jl;j\n\n\n\n\n\n\n\n\\n\n\n\n\n\\n\n\n\n\\n\n\n')
         instance.delete()
         return Response("OK",HTTP_204_NO_CONTENT)
 
