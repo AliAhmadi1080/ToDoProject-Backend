@@ -46,26 +46,12 @@ from rest_framework.status import *
 #         instance.delete()
 #         return Response("OK",HTTP_204_NO_CONTENT)
     
-class ToDoMixinList(mixins.CreateModelMixin,mixins.ListModelMixin,generics.GenericAPIView):
+class ToDoGenericsList(generics.ListCreateAPIView):
     queryset = ToDo.objects.all()
     serializer_class = ToDoSirializer
 
-    def get(self, request, *args, **kwargs):
-        return self.list(request, *args, **kwargs)
     
-    def post(self, request, *args, **kwargs):
-        return self.create(request, *args, **kwargs)
-    
-class ToDoMixinDetail(mixins.DestroyModelMixin,mixins.UpdateModelMixin,mixins.RetrieveModelMixin,generics.GenericAPIView):
+class ToDoGenericsDetail(generics.RetrieveUpdateDestroyAPIView):
 
     queryset = ToDo.objects.all()
     serializer_class = ToDoSirializer
-
-    def get(self, request, *args, **kwargs):
-        return self.retrieve(request, *args, **kwargs)
-    
-    def delete(self, request, *args, **kwargs):
-        return self.destroy(request, *args, **kwargs)
-
-    def put(self, request, *args, **kwargs):
-        return self.update(request, *args, **kwargs)
