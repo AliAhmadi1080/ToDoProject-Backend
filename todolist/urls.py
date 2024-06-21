@@ -3,6 +3,6 @@ from . import views
 
 
 urlpatterns = [
-    path('',views.ToDoList.as_view()),
-    path('<int:pk>/',views.ToDoDetail.as_view()),
+    path('',views.ToDoMixinList.as_view()),
+    path('<int:pk>/',views.ToDoMixinDetail.as_view()),
 ]
