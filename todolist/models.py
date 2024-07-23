@@ -26,7 +26,7 @@ class Status(models.Model):
 
 
 class ToDo(models.Model):
-    name         = models.CharField('نام',max_length=63)
+    title         = models.CharField('عنوان',max_length=63)
     subtitle     = models.CharField('زیر عنوان',max_length=63)
     user         = models.ForeignKey(User,on_delete=models.CASCADE,verbose_name='کاربر',related_name='todos')
     status       = models.ForeignKey("Status",on_delete=models.SET_DEFAULT,default='انجام نشده',verbose_name="وضعیت")
