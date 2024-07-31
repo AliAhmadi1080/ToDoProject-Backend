@@ -1,12 +1,12 @@
-from django.db.models.signals import post_migrate
+from django.db.models.signals import post_save
 from django.dispatch import receiver
-from .models import Status  # مدل خود را وارد کنید
+from .models import Status  
+from django.contrib.auth import get_user_model
+User = get_user_model()
 
-@receiver(post_migrate)
-def create_initial_instances(sender, **kwargs):
-    if sender.name == 'todolist':
-        
-        if not Status.objects.exists():
-            Status.objects.create(name='انجام نشده')
-            Status.objects.create(name='درحال انجام')
-            Status.objects.create(name='انجام شده')
+@receiver(post_save, sender=User)
+def createstatus(instance, created:bool, **kwargs):
+    if created:
+        Status.objects.create(user=instance,name='انجام نشده')
+        Status.objects.create(user=instance,name='درحال انجام')
+        Status.objects.create(user=instance,name='انجام شده')
