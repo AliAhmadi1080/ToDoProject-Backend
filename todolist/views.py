@@ -1,5 +1,5 @@
 from rest_framework.views import APIView
-from .serializers import ToDoSirializer, CustomeUserSirializer
+from .serializers import ToDoSerializer, CustomeUserSerializer
 from .models import ToDo
 from django.contrib.auth import get_user_model
 from rest_framework import generics
@@ -14,11 +14,11 @@ User = get_user_model()
 class ToDoList(APIView):
     def get(self,request:Request):
         all_todos = ToDo.objects.all()
-        serialized_data = ToDoSirializer(all_todos,many=True)
+        serialized_data = ToDoSerializer(all_todos,many=True)
         return Response(serialized_data.data,HTTP_200_OK)
     
     def post(self,request:Request):
-        instance = ToDoSirializer(data=request.data,many=False)
+        instance = ToDoSerializer(data=request.data,many=False)
         if instance.is_valid():
             instance.save()
             return Response(instance.data,HTTP_201_CREATED)
@@ -30,7 +30,7 @@ class ToDoGenericsDetail(generics.DestroyAPIView,generics.UpdateAPIView):
     authentication_classes = (JWTAuthentication,)
     permission_classes = (IsAuthenticated,)
     queryset = ToDo.objects.all()
-    serializer_class = ToDoSirializer
+    serializer_class = ToDoSerializer
 
 class UserToDo(APIView):
     def get(self,request:Request):
@@ -40,8 +40,8 @@ class UserToDo(APIView):
             email = request.data['email']
             this_user = User.objects.get(email=email)
             these_todos = ToDo.objects.filter(user=this_user)
-            serialized_data = ToDoSirializer(these_todos,many=True)
-            user = CustomeUserSirializer(this_user)
+            serialized_data = ToDoSerializer(these_todos,many=True)
+            user = CustomeUserSerializer(this_user)
 
             
         except:
