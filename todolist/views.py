@@ -1,13 +1,14 @@
 from rest_framework.views import APIView
-from .serializers import ToDoSirializer
+from .serializers import ToDoSirializer, CustomeUserSirializer
 from .models import ToDo
 from django.contrib.auth import get_user_model
-from rest_framework import mixins, generics
+from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.request import Request
 from rest_framework.status import *
 from rest_framework.permissions import IsAuthenticated 
-from rest_framework_simplejwt.authentication import JWTAuthentication
+from rest_framework_simplejwt.authentication import\
+                                     JWTAuthentication
 User = get_user_model()
 
 class ToDoList(APIView):
@@ -40,9 +41,11 @@ class UserToDo(APIView):
             this_user = User.objects.get(email=email)
             these_todos = ToDo.objects.filter(user=this_user)
             serialized_data = ToDoSirializer(these_todos,many=True)
+            user = CustomeUserSirializer(this_user)
+
             
         except:
             return Response({},HTTP_400_BAD_REQUEST)
-        return Response({'user':serialized_data.data},HTTP_200_OK)
+        return Response({'todo':serialized_data.data,'user':user.data},HTTP_200_OK)
 
     
