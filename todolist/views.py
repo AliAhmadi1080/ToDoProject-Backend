@@ -33,19 +33,21 @@ class ToDoGenericsDetail(generics.DestroyAPIView,generics.UpdateAPIView):
     serializer_class = ToDoSerializer
 
 class UserToDo(APIView):
+    authentication_classes = (JWTAuthentication,)
+    permission_classes = (IsAuthenticated,)
+    
     def get(self,request:Request):
-        return Response({},HTTP_400_BAD_REQUEST)
-    def post(self,request:Request):
         try:
-            email = request.data['email']
-            this_user = User.objects.get(email=email)
+            this_user = request.user
             these_todos = ToDo.objects.filter(user=this_user)
             serialized_data = ToDoSerializer(these_todos,many=True)
             user = CustomeUserSerializer(this_user)
-
-            
         except:
             return Response({},HTTP_400_BAD_REQUEST)
         return Response({'todo':serialized_data.data,'user':user.data},HTTP_200_OK)
+    
+
+    
+    
 
     
