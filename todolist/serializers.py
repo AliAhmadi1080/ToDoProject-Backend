@@ -1,5 +1,4 @@
 from rest_framework.serializers import ModelSerializer
-from account.models import CustomeUser
 from .models import ToDo, ToDoList
 
 
@@ -10,10 +9,10 @@ class ToDoSerializer(ModelSerializer):
         fields = '__all__'
 
 class ToDoListSerializer(ModelSerializer):
-    
+    todo_list = ToDoSerializer(many=True,read_only=True)
     class Meta:
         model = ToDoList
-        fields = '__all__'
+        fields = ['id', 'user', 'name','todo_list']
 
 
 
