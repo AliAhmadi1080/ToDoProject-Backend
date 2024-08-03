@@ -51,7 +51,7 @@ class ToDo(models.Model):
 class ToDoList(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE)
     name = models.CharField('نام',max_length=63)
-    todos = models.ManyToManyField(ToDo,verbose_name='وظیفه ها',related_name='todos')
+    todos = models.ManyToManyField(ToDo,verbose_name='وظیفه ها',related_name='todos',null=True,blank=True)
 
     def __str__(self) -> str:
         return self.name
