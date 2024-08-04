@@ -44,7 +44,7 @@ class ToDo(models.Model):
     status       = models.ForeignKey("Status",on_delete=models.CASCADE,verbose_name="وضعیت",related_name='status')
     description  = models.TextField('توضیحات',null=True)
     created_at   = models.DateTimeField(auto_now_add=True,verbose_name='زمان شروع',editable=False)
-    tags         = models.ManyToManyField('Tag',verbose_name='تگ ها',related_name='tags', blank=True)
+    tags         = models.ManyToManyField('Tag',verbose_name='تگ ها',related_name='todos', blank=True)
     todo_list    = models.ForeignKey(ToDoList,on_delete=models.CASCADE, related_name='todo_list', verbose_name='لیست وظیفه ها')
 
 
