@@ -31,7 +31,7 @@ class ToDoListCreate(APIView):
             return Response(instance.data, HTTP_201_CREATED)
         return Response(None, HTTP_400_BAD_REQUEST)
 
-class ToDoGenericsDetail(generics.DestroyAPIView,generics.UpdateAPIView):
+class ToDoGenericsDetail(generics.RetrieveUpdateDestroyAPIView):
     authentication_classes = (JWTAuthentication,)
     permission_classes = (IsAuthenticated,)
     queryset = ToDo.objects.all()
