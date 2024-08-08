@@ -1,6 +1,6 @@
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-from .models import Status  
+from .models import Status, Tag
 from django.contrib.auth import get_user_model
 User = get_user_model()
 
@@ -10,3 +10,15 @@ def createstatus(instance, created:bool, **kwargs):
         Status.objects.create(user=instance,name='انجام نشده')
         Status.objects.create(user=instance,name='درحال انجام')
         Status.objects.create(user=instance,name='انجام شده')
+
+def create_slug(instance:Tag):
+    slug = instance.name.replace(' ', '-')
+    slug += '-'+str(instance.id)
+    return slug
+
+@receiver(post_save, sender=Tag)
+def createstatus(instance:Tag, created:bool, **kwargs):
+    if not instance.slug:
+        instance.slug = create_slug(instance)
+        instance.save()
+        
