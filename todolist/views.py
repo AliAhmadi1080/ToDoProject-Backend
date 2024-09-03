@@ -44,7 +44,21 @@ class ToDoGenericsDetail(generics.RetrieveUpdateDestroyAPIView):
         except:
             pass
         request.data['user'] = request.user.id
+        todo_object:ToDo = self.get_object()
+        request.data['todo_list'] = todo_object.todo_list.id
+        instance = ToDoSerializer(instance=todo_object, data=request.data)
         
+        if instance.is_valid():
+            instance.save()
+            instance:ToDo = instance.instance
+            instance.tags.clear()
+            for i in request.data.pop('tags'):
+                tag = Tag.objects.get(id=i)
+                print(tag)
+                instance.tags.add(tag)
+            instance.save()
+            print(instance.tags)
+            return Response('good',HTTP_201_CREATED)
         return super().update(request, *args, **kwargs)
 
 class UserToDoList(APIView):
