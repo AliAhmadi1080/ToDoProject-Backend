@@ -44,9 +44,7 @@ class ToDoGenericsDetail(generics.RetrieveUpdateDestroyAPIView):
         except:
             pass
         request.data['user'] = request.user.id
-
-        todo = get_object_or_404(ToDo, id=request.data['todoid'])
-        request.data['todo_list'] = todo.todo_list.id
+        
         return super().update(request, *args, **kwargs)
 
 class UserToDoList(APIView):
