@@ -1,3 +1,4 @@
+from django.shortcuts import get_object_or_404
 from rest_framework.views import APIView
 from .serializers import ToDoSerializer,ToDoListSerializer,\
                             TagSerializer, StatusSerializer
@@ -31,10 +32,22 @@ class ToDoListCreate(APIView):
         return Response(None, HTTP_400_BAD_REQUEST)
 
 class ToDoGenericsDetail(generics.RetrieveUpdateDestroyAPIView):
+    
     authentication_classes = (JWTAuthentication,)
     permission_classes = (IsAuthenticated,)
     queryset = ToDo.objects.all()
     serializer_class = ToDoSerializer
+
+    def update(self, request:Request, *args, **kwargs):
+        try:
+            request.data._mutable = True
+        except:
+            pass
+        request.data['user'] = request.user.id
+
+        todo = get_object_or_404(ToDo, id=request.data['todoid'])
+        request.data['todo_list'] = todo.todo_list.id
+        return super().update(request, *args, **kwargs)
 
 class UserToDoList(APIView):
     authentication_classes = (JWTAuthentication,)
