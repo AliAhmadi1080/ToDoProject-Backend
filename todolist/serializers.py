@@ -22,8 +22,7 @@ class ToDoSerializer(ModelSerializer):
         fields = '__all__'
 
     def is_valid(self, *, raise_exception=False):
-        self.tags = self.initial_data['tags']
-        
+        self.tags = dict(self.initial_data).get('tags',[])
         return super().is_valid(raise_exception=raise_exception)
 
     def create(self, validated_data):

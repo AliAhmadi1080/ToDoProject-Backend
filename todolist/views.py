@@ -16,7 +16,9 @@ User = get_user_model()
 class ToDoCreate(APIView):
     def post(self,request:Request):
         request.data['user'] = request.user.id
+        
         instance = ToDoSerializer(data=request.data)
+        
         if instance.is_valid():
             instance.save()
             return Response(instance.data,HTTP_201_CREATED)
