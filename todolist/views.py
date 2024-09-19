@@ -56,10 +56,8 @@ class ToDoGenericsDetail(generics.RetrieveUpdateDestroyAPIView):
             instance.tags.clear()
             for i in request.data.pop('tags'):
                 tag = Tag.objects.get(id=i)
-                print(tag)
                 instance.tags.add(tag)
             instance.save()
-            print(instance.tags)
             return Response('good',HTTP_201_CREATED)
         return super().update(request, *args, **kwargs)
 
