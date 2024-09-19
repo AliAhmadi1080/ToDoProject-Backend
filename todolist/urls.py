@@ -7,6 +7,7 @@ urlpatterns = [
     path('usertodo',views.UserToDoList.as_view()),
     path('createtodolist',views.ToDoListCreate.as_view()),
     path('tag',views.UserTag.as_view()),
+    path('tagtodo/<slug:slug>/',views.TagToDo.as_view()),
     path('status',views.UserStatus.as_view()),
     path('<int:pk>/',views.ToDoGenericsDetail.as_view()),
 ]

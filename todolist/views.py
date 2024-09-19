@@ -70,6 +70,16 @@ class UserToDoList(APIView):
         serialized_data = ToDoListSerializer(these_todos,many=True)
         return Response(serialized_data.data,HTTP_200_OK)
     
+class TagToDo(APIView):
+    authentication_classes = (JWTAuthentication,)
+    permission_classes = (IsAuthenticated,)
+    
+    def get(self,request:Request,slug):
+        tag = get_object_or_404(Tag, slug=slug)
+        these_todos = ToDo.objects.filter(user=request.user,tags=tag)
+        serialized_data = ToDoSerializer(these_todos,many=True)
+        return Response(serialized_data.data,HTTP_200_OK)
+    
 class UserTag(APIView):
     authentication_classes = (JWTAuthentication,)
     permission_classes = (IsAuthenticated,)
@@ -103,3 +113,4 @@ class UserStatus(APIView):
             instance.save()
             return Response(instance.data,HTTP_201_CREATED)
         return Response(None,HTTP_406_NOT_ACCEPTABLE)
+    
