@@ -2,6 +2,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from .models import Status, Tag
 from django.contrib.auth import get_user_model
+import uuid
 User = get_user_model()
 
 @receiver(post_save, sender=User)
@@ -12,7 +13,7 @@ def createstatus(instance, created:bool, **kwargs):
         Status.objects.create(user=instance,name='انجام شده')
 
 def create_slug(instance:Tag):
-    slug = instance.name.replace(' ', '-')
+    slug = 'this-is-slug'
     slug += '-'+str(instance.id)
     return slug
 
