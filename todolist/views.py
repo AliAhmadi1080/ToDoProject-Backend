@@ -29,6 +29,7 @@ class ToDoListAPI(APIView):
         these_todos = ToDoList.objects.all()
         instance = ToDoListSerializer(these_todos, many=True)
         return Response(instance.data, HTTP_200_OK)
+    
     def post(self,request:Request):
         request.data['user'] = request.user.id
         instance = ToDoListSerializer(data=request.data)
