@@ -24,7 +24,11 @@ class ToDoCreate(APIView):
             return Response(instance.data,HTTP_201_CREATED)
         return Response(None,HTTP_406_NOT_ACCEPTABLE)
 
-class ToDoListCreate(APIView):
+class ToDoListAPI(APIView):
+    def get(self,request:Request):
+        these_todos = ToDoList.objects.all()
+        instance = ToDoListSerializer(these_todos, many=True)
+        return Response(instance.data, HTTP_200_OK)
     def post(self,request:Request):
         request.data['user'] = request.user.id
         instance = ToDoListSerializer(data=request.data)
