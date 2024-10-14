@@ -92,8 +92,8 @@ class TagToDo(APIView):
 
 
 class UserTag(APIView):
-    authentication_classes = (JWTAuthentication,)
-    permission_classes = (IsAuthenticated,)
+    # authentication_classes = (JWTAuthentication,)
+    # permission_classes = (IsAuthenticated,)
 
     def get(self, request: Request):
         tags = Tag.objects.filter(user=request.user)
@@ -108,6 +108,10 @@ class UserTag(APIView):
             return Response(instance.data, HTTP_201_CREATED)
         return Response(None, HTTP_406_NOT_ACCEPTABLE)
 
+    def delete(self, request, pk, *args):
+        obj = get_object_or_404(Tag, id=pk)
+        obj.delete()
+        return Response(status=HTTP_204_NO_CONTENT)
 
 class UserStatus(APIView):
     authentication_classes = (JWTAuthentication,)
@@ -125,3 +129,8 @@ class UserStatus(APIView):
             instance.save()
             return Response(instance.data, HTTP_201_CREATED)
         return Response(None, HTTP_406_NOT_ACCEPTABLE)
+    
+    def delete(self, request, pk, *args):
+        obj = get_object_or_404(Status, id=pk)
+        obj.delete()
+        return Response(status=HTTP_204_NO_CONTENT)
